@@ -14,12 +14,13 @@
   />
   <style>
     :root {
-      --neon-cyan: #49c9ff;
+      --neon-cyan: #49c9ff;   
       --smoky-blue: #4a6378;
       --asphalt: #1a1d24;
       --hologram: rgba(0, 255, 255, 0.1);
     }
 
+    /* Общие стили */
     body {
       margin: 0;
       min-height: 100vh;
@@ -30,9 +31,30 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      background: url('city.jpg') no-repeat center center/cover;
+    }
 
-      background: url('city.jpg')
-        no-repeat center center/cover;
+    @media (min-width: 769px) {
+      body {
+        background: transparent;
+      }
+    }
+
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      #background-video {
+        display: none;
+      }
     }
 
     body::before {
@@ -91,34 +113,18 @@
     }
 
     .links-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      padding: 0;
-      list-style: none;
-      /* Сделаем flex-контейнером для order */
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
+      padding: 0;
+      list-style: none;
     }
 
     .link-item {
       position: relative;
       transition: transform 0.3s ease;
       flex: 1 1 calc(50% - 1.5rem);
-    }
-
-    /* Поменяем порядок кнопок WeChat и Email */
-    .link-item.wechat {
-      order: 1;
-    }
-    .link-item.email {
-      order: 2;
-    }
-
-    /* Остальные элементы order по умолчанию = 0 */
-    .link-item:not(.wechat):not(.email) {
-      order: 0;
+      cursor: pointer;
     }
 
     .link-item:hover {
@@ -144,7 +150,6 @@
         0 0 8px var(--neon-cyan),
         inset 0 0 15px rgba(0, 255, 255, 0.2);
       font-weight: 500;
-      cursor: pointer;
     }
 
     .link-item a::before {
@@ -181,24 +186,12 @@
       z-index: 2;
     }
 
-    /* Цвета для социальных иконок */
-    .vk {
-      color: #5e7c9e;
-    }
-    .wa {
-      color: #25d366;
-    }
-    .tg {
-      color: #0088cc;
-    }
-    .email {
-      color: #e74c3c;
-    }
-    .wechat {
-      color: var(--neon-cyan);
-    }
+    .vk { color: #5e7c9e; }
+    .wa { color: #25d366; }
+    .tg { color: #0088cc; }
+    .email { color: #e74c3c; }
+    .wechat { color: var(--neon-cyan); }
 
-    /* Стили для QR-кода WeChat */
     #wechat-qr {
       position: fixed;
       top: 50%;
@@ -229,7 +222,6 @@
       user-select: none;
     }
 
-    /* Кнопка закрытия */
     #wechat-qr .close-btn {
       margin-top: 1rem;
       background: transparent;
@@ -243,12 +235,31 @@
       transition: background-color 0.3s ease;
     }
 
-    #wechat-qr .close-btn:hover {
-      background-color: var(--neon-cyan);
+    #music-toggle-btn {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: transparent;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    #music-toggle-btn:hover {
+      background: var(--neon-cyan);
       color: #0a0e12;
     }
 
-    /* Адаптивность */
     @media (max-width: 768px) {
       .links-grid {
         flex-direction: column;
@@ -265,24 +276,50 @@
   </style>
 </head>
 <body>
+  <!-- Фоновое видео -->
+  <video id="background-video" autoplay loop muted playsinline>
+    <source src="video.mp4" type="video/mp4">
+    Ваш браузер не поддерживает видео.
+  </video>
+
+  <!-- Кнопка управления музыкой -->
+  <button id="music-toggle-btn" onclick="toggleAudio()">
+    <i class="fas fa-volume-mute"></i> Музыка: выкл
+  </button>
+
+  <!-- Аудио -->
+  <audio id="background-audio" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио.
+  </audio>
+
+  <!-- Звуки кнопок -->
+  <audio id="hover-sound">
+    <source src="hover.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="click-sound">
+    <source src="click.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Основной контент -->
   <div class="noir-container">
     <div class="scanlines"></div>
     <h1>// contacts</h1>
     <ul class="links-grid">
       <li class="link-item vk">
-        <a href="https://vk.com/id2778777" target="_blank" rel="noopener noreferrer">
+        <a href="https://vk.com/id2778777"  target="_blank" rel="noopener noreferrer">
           <i class="link-icon fab fa-vk"></i>
           <span class="link-text">VKontakte</span>
         </a>
       </li>
       <li class="link-item tg">
-        <a href="https://t.me/nike3li" target="_blank" rel="noopener noreferrer">
+        <a href="https://t.me/nike3li"  target="_blank" rel="noopener noreferrer">
           <i class="link-icon fab fa-telegram-plane"></i>
           <span class="link-text">Telegram</span>
         </a>
       </li>
       <li class="link-item wa">
-        <a href="https://wa.me/79269084814" target="_blank" rel="noopener noreferrer">
+        <a href="https://wa.me/79269084814"  target="_blank" rel="noopener noreferrer">
           <i class="link-icon fab fa-whatsapp"></i>
           <span class="link-text">WhatsApp</span>
         </a>
@@ -293,26 +330,36 @@
           <span class="link-text">WeChat</span>
         </a>
       </li>
-
     </ul>
   </div>
 
+  <!-- QR-код WeChat -->
   <div id="wechat-qr">
     <img src="qr.jpg" alt="WeChat QR Code" />
     <p>Сканируйте QR-код, чтобы связаться в WeChat</p>
     <button class="close-btn" id="close-qr">Закрыть</button>
   </div>
 
+  <!-- Скрипты -->
   <script>
+    // === Инициализация элементов ===
     const wechatBtn = document.getElementById('wechat-btn');
     const wechatQR = document.getElementById('wechat-qr');
     const closeBtn = document.getElementById('close-qr');
+    const musicBtn = document.getElementById('music-toggle-btn');
+    
+    // === Звуки ===
+    const hoverSound = document.getElementById('hover-sound');
+    const clickSound = document.getElementById('click-sound');
 
+    // === QR-код WeChat ===
     wechatBtn.addEventListener('click', () => {
+      playClickSound();
       wechatQR.style.display = wechatQR.style.display === 'block' ? 'none' : 'block';
     });
 
     closeBtn.addEventListener('click', () => {
+      playClickSound();
       wechatQR.style.display = 'none';
     });
 
@@ -321,6 +368,55 @@
         wechatQR.style.display = 'none';
       }
     });
+
+    // === Аудио управление ===
+    const audio = document.getElementById('background-audio');
+    const btn = document.getElementById('music-toggle-btn');
+    let isPlaying = false;
+
+    function toggleAudio() {
+      if (!isPlaying) {
+        audio.play().catch(e => {
+          console.log("Не удалось воспроизвести аудио:", e);
+          alert("Взаимодействуйте с сайтом, чтобы запустить музыку.");
+        });
+        btn.innerHTML = '<i class="fas fa-volume-up"></i> Музыка: вкл';
+        isPlaying = true;
+      } else {
+        audio.pause();
+        btn.innerHTML = '<i class="fas fa-volume-mute"></i> Музыка: выкл';
+        isPlaying = false;
+      }
+    }
+
+    // === Звуки кнопок ===
+    function playHoverSound() {
+      if (!hoverSound) return;
+      hoverSound.currentTime = 0;
+      hoverSound.play().catch(() => {});
+    }
+
+    function playClickSound() {
+      if (!clickSound) return;
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+    // Добавляем обработчики звуков ко всем кнопкам
+    document.querySelectorAll('.link-item a, .close-btn, #wechat-btn, #music-toggle-btn').forEach(element => {
+      element.addEventListener('mouseenter', playHoverSound);
+      element.addEventListener('click', playClickSound);
+    });
+
+    // Разрешаем воспроизведение после первого клика
+    window.addEventListener('click', () => {
+      if (!hoverSound.playing) {
+        hoverSound.play().catch(() => {});
+        clickSound.play().catch(() => {});
+        hoverSound.pause();
+        clickSound.pause();
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
