@@ -95,6 +95,46 @@
       font-size: 0.9rem;
       color: #666;
     }
+
+    .back-link {
+      margin-bottom: 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: #00e6f6;
+      text-shadow: 0 0 6px #00e6f6;
+    }
+
+    .back-link a {
+      color: inherit;
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    /* Анимация неонового подчеркивания */
+    .back-link a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: #00e6f6;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      border-radius: 1px;
+    }
+
+    .back-link a:hover {
+      text-shadow: 0 0 8px #00e6f6, 0 0 15px #00e6f6;
+    }
+
+    .back-link a:hover::after {
+      transform: scaleX(1);
+    }
+    
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -105,6 +145,10 @@
   <!-- Контент -->
   <div class="container">
     <h1 class="neon">МОДУЛЬ SCRATCHER</h1>
+
+    <p class="back-link">
+      <a href="../index.html">-> Contacts</a>
+    </p>
 
     <h2>Анализ требований и существующих решений</h2>
     <p>Модуль основного продукта представляет продвинутый парсер и поисковик по российским маркетплейсам с аналитикой собранных данных. Задача – помочь как начинающим предпринимателям найти перспективные ниши, так и крупным селлерам получить аналитику конкурентов. Ключевые запросы: сбор данных о продажах, обороте и остатках товара у конкурентов на Wildberries, Ozon, Яндекс.Маркете, а также анализ аудитории по отзывам (определение целевых групп). Идея – получить всю маркетинговую информацию (объемы продаж, целевая аудитория, тренды) на основе собранных данных.</p>
