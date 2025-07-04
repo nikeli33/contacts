@@ -98,6 +98,35 @@
       border-radius: 10px;
     }
 
+     .custom-link a {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1rem;
+        color: var(--neon-cyan);
+        text-decoration: none;
+        letter-spacing: 1.2px;
+        transition: color 0.3s ease;
+        display: inline-block;
+        position: relative;
+      }
+
+      .custom-link a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--neon-cyan);
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .custom-link a:hover::after {
+        visibility: visible;
+        transform: scaleX(1);
+      }
+
     h1 {
       font-family: 'Major Mono Display', monospace;
       font-size: 3rem;
@@ -305,6 +334,9 @@
   <div class="noir-container">
     <div class="scanlines"></div>
     <h1>// contacts</h1>
+    <p class="custom-link">
+      <a href="modules/SCRATCHER_MAIN.html">Eva.project.scratcher</a>
+    </p>
     <ul class="links-grid">
       <li class="link-item vk">
         <a href="https://vk.com/id2778777"  target="_blank" rel="noopener noreferrer">
