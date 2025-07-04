@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МОДУЛЬ SCRATCHER</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #0d0d0d 0%, #090909 100%);
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .line {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background: rgba(0, 230, 246, 0.35);
+      animation: scrollDown 5s linear infinite;
+    }
+
+    @keyframes scrollDown {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1, h2, h3 {
+      color: #00e6f6;
+      text-shadow: 0 0 8px #00e6f6;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-top: 2rem;
+      border-left: 4px solid #ff00c8;
+      padding-left: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      color: #ff00c8;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 1rem 0;
+    }
+
+    ul {
+      margin: 1rem 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 0.5rem 0;
+    }
+
+    .neon {
+      color: #ff00c8;
+      text-shadow: 0 0 6px #ff00c8;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Фоновая анимация -->
+  <div class="background-animation" id="animated-bg"></div>
+
+  <!-- Контент -->
+  <div class="container">
+    <h1 class="neon">МОДУЛЬ SCRATCHER</h1>
+
+    <h2>Анализ требований и существующих решений</h2>
+    <p>Модуль основного продукта представляет продвинутый парсер и поисковик по российским маркетплейсам с аналитикой собранных данных. Задача – помочь как начинающим предпринимателям найти перспективные ниши, так и крупным селлерам получить аналитику конкурентов. Ключевые запросы: сбор данных о продажах, обороте и остатках товара у конкурентов на Wildberries, Ozon, Яндекс.Маркете, а также анализ аудитории по отзывам (определение целевых групп). Идея – получить всю маркетинговую информацию (объемы продаж, целевая аудитория, тренды) на основе собранных данных.</p>
+
+    <p>Сейчас на рынке уже существуют подобные сервисы: например, расширение «Маяк» показывает продажи и обороты товаров на WB и Ozon, а расширение Seerfar предлагает продавцам аналитику продаж, трендов и конкурентов. Эти продукты являются бесплатными или условно-бесплатными инструментами для мониторинга ниши. Это говорит о наличии спроса, но нам нужно выделиться «фишками»: интеграция в Telegram-ботов, использование AI для анализа отзывов, персональная статистика.</p>
+
+    <h3>Сильные стороны текущей концепции</h3>
+    <ul>
+      <li>Единая система на базе Telegram-ботов и n8n</li>
+      <li>Возможность автоматизации процессов</li>
+      <li>Наличие AI-компонентов (OlLama, генерация контента)</li>
+      <li>Функционал ботов уже покрывает администрирование и лидогенерацию</li>
+    </ul>
+
+    <h3>Слабые стороны и риски</h3>
+    <ul>
+      <li>Анти-бот защиты и изменения API маркетплейсов</li>
+      <li>Конкуренция с готовыми решениями («Маяк», Seerfar)</li>
+      <li>Требования к хранению и обработке больших объёмов данных</li>
+      <li>Сложность NLP/ML для анализа отзывов</li>
+      <li>Правовые ограничения на парсинг и нагрузку на сайты</li>
+    </ul>
+
+    <h2>Функциональные требования и варианты развития</h2>
+
+    <h3>Маркетплейсы и приоритеты</h3>
+    <p>Приоритетная очередь: Ozon → Wildberries → Яндекс.Маркет. Сначала Ozon и WB (много открытой информации), затем подключить ЯМ (API партнёра или сложный парсинг).</p>
+
+    <h3>Режим сбора данных</h3>
+    <p>Реального времени не требуется: сбор по запросу (клик пользователя) или cron-триггер. Это упрощает архитектуру и снижает нагрузку.</p>
+
+    <h3>Тип выводимой информации</h3>
+    <ul>
+      <li>Telegram-бот (с Web App) — быстрота запросов</li>
+      <li>Графический интерфейс («оболочка» на Docker/OlLama/n8n) — детальный анализ. Данные сохраняются в базу или Excel.</li>
+    </ul>
+
+    <h3>База и форматы</h3>
+    <p>Начальный этап — Excel/CSV. При росте — перейти на СУБД:</p>
+    <ul>
+      <li>SQL (PostgreSQL/MySQL) — структурированные данные</li>
+      <li>NoSQL (MongoDB) — гибкость схемы для отзывов</li>
+    </ul>
+
+    <h3>Отчетность и визуализация</h3>
+    <p>Генерация графиков (Matplotlib/Plotly) и отправка в Telegram или Web App. Telegram Mini Apps для HTML5-интерактивности.</p>
+
+    <h3>Дополнительные фичи</h3>
+    <ul>
+      <li>Анализ остатков конкурентов</li>
+      <li>Тренды и история продаж (динамика)</li>
+      <li>Анализ ЦА по отзывам (LLM, ключевые слова)</li>
+      <li>Мониторинг изменений цен и остатков у конкурентов</li>
+    </ul>
+
+    <h2>Технологический стек и архитектура</h2>
+
+    <h3>Сбор данных (парсинг)</h3>
+    <p>Python/Node.js, парсинг HTML/API. Для WB — внутреннее API через XHR. Теги: requests, BeautifulSoup, Scrapy, Playwright/Selenium. Прокси и смена User-Agent.</p>
+
+    <h3>Хранение данных</h3>
+    <p>SQL (PostgreSQL/MySQL) для таблиц, NoSQL (MongoDB) для отзывов. Индексация, бэкапы.</p>
+
+    <h3>Обработка и аналитика данных</h3>
+    <p>Python: pandas, NumPy, scikit-learn, NLTK/spacy, transformers. LLM через OlLama для анализа отзывов и портретов аудитории.</p>
+
+    <h3>Интеграция и автоматизация (n8n)</h3>
+    <p>HTTP Request, узлы БД, Cron. Webhook из Telegram запускает воркфлоу. Интеграция с Google Sheets.</p>
+
+    <h3>Telegram-бот</h3>
+    <p>Библиотеки: python-telegram-bot, aiogram. Команды “анализ товара X”, графики, Web Apps.</p>
+
+    <h3>Веб/графический интерфейс</h3>
+    <p>Flask/Django или PyQt/Qt. Чтение данных из той же БД.</p>
+
+    <h3>Развертывание (Docker)</h3>
+    <p>Контейнеры: парсер, бот, веб-интерфейс, OlLama. Оркестратор — Docker.</p>
+
+    <div class="footer">© 2025 SCRATCHER Module</div>
+  </div>
+
+  <!-- Скрипт анимации -->
+  <script>
+    const bg = document.getElementById('animated-bg');
+    for (let i = 0; i < 40; i++) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+      line.style.left = Math.random() * 100 + 'vw';
+      line.style.animationDuration = (3 + Math.random() * 4) + 's';
+      line.style.opacity = Math.random() * 0.3 + 0.05;
+      bg.appendChild(line);
+    }
+  </script>
+</body>
+</html>
